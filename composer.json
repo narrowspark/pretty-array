@@ -18,7 +18,8 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "symfony/polyfill-ctype": "^1.8.0"
     },
     "require-dev": {
         "narrowspark/php-cs-fixer-config": "^2.1.0",
