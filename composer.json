@@ -21,7 +21,6 @@
         "php": "^7.2"
     },
     "require-dev": {
-        "composer/composer": "^1.6.0",
         "narrowspark/php-cs-fixer-config": "^2.1.0",
         "phpstan/phpstan": "^0.9.0",
         "phpstan/phpstan-phpunit": "^0.9.0",
