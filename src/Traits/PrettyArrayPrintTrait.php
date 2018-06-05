@@ -19,8 +19,8 @@ trait PrettyArrayPrintTrait
 
         foreach ($data as $key => $value) {
             if (! \is_int($key)) {
-                if (\is_string($key) && (\class_exists($key) || \interface_exists($key)) && \ctype_upper($key[0])) {
-                    $key = \sprintf('\\%s::class', \ltrim($key, '\\'));
+                if (self::isClass($key)) {
+                    $key = self::dumpLiteralClass($key);
                 } else {
                     $key = \sprintf("'%s'", $key);
                 }
@@ -53,8 +53,8 @@ trait PrettyArrayPrintTrait
             return self::getPrettyPrintArray($value, $indentLevel + 1);
         }
 
-        if (\is_string($value) && (\class_exists($value) || \interface_exists($value)) && \ctype_upper($value[0])) {
-            return \sprintf('\\%s::class', \ltrim($value, '\\'));
+        if (self::isClass($value)) {
+            return self::dumpLiteralClass($value);
         }
 
         if (\is_numeric($value)) {
@@ -66,5 +66,39 @@ trait PrettyArrayPrintTrait
         }
 
         return \var_export($value, true);
+    }
+
+    /**
+     * Dumps a string to a literal (aka PHP Code) class value.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    private static function dumpLiteralClass(string $class): string
+    {
+        $class = \str_replace('\\\\', '\\', $class);
+        $class = \sprintf('%s::class', $class);
+
+        return \mb_strpos($class, '\\') === 0 ? $class : '\\' . $class;
+    }
+
+    /**
+     * Check if entry is a class.
+     *
+     * @param mixed $key
+     *
+     * @return bool
+     */
+    private static function isClass($key): bool
+    {
+        if (! \is_string($key)) {
+            return false;
+        }
+
+        $key       = \ltrim($key, '\\');
+        $firstChar = \mb_substr($key, 0, 1);
+
+        return (\class_exists($key) || \interface_exists($key)) && \mb_strtolower($firstChar) !== $firstChar;
     }
 }

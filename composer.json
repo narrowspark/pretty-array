@@ -19,10 +19,10 @@
     ],
     "require": {
         "php": "^7.2",
-        "symfony/polyfill-ctype": "^1.8.0"
+        "symfony/polyfill-mbstring": "^1.8.0"
     },
     "require-dev": {
-        "narrowspark/php-cs-fixer-config": "^2.1.0",
+        "narrowspark/php-cs-fixer-config": "^3.0.1",
         "phpstan/phpstan": "^0.9.0",
         "phpstan/phpstan-phpunit": "^0.9.0",
         "phpunit/phpunit": "^7.0.0",
