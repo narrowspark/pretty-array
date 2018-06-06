@@ -31,6 +31,7 @@ final class PrettyArrayTest extends TestCase
                     },
                 ],
                 '[' . \PHP_EOL . '    0 => 1,' . \PHP_EOL . ']',
+                1,
                 [
                     'object' => function ($value) {
                         TestCase::assertInstanceOf(\Closure::class, $value);
@@ -51,6 +52,7 @@ final class PrettyArrayTest extends TestCase
                     ],
                 ],
                 '[' . \PHP_EOL . '    0 => 1,' . \PHP_EOL . '    1 => [' . \PHP_EOL . '        \'foo\' => 1,' . \PHP_EOL . '    ],' . \PHP_EOL . ']',
+                1,
                 [
                     'object' => function ($value) {
                         TestCase::assertInstanceOf(\Closure::class, $value);
@@ -59,6 +61,7 @@ final class PrettyArrayTest extends TestCase
                     },
                 ],
             ],
+            [['foo' => 'bar', ['foo' => 'bar']], '[' . \PHP_EOL . '        \'foo\' => \'bar\',' . \PHP_EOL . '        0 => [' . \PHP_EOL . '            \'foo\' => \'bar\',' . \PHP_EOL . '        ],' . \PHP_EOL . '    ]', 2],
         ];
     }
 
@@ -67,10 +70,19 @@ final class PrettyArrayTest extends TestCase
      *
      * @param array  $array
      * @param string $expected
-     * @param array  $resolver
+     * @param int    $indentLevel
+     * @param array  $resolvers
      */
-    public function testConvertsValueToValidPhp($array, $expected, array $resolver = []): void
+    public function testConvertsValueToValidPhp($array, $expected, int $indentLevel = 1, array $resolvers = []): void
     {
-        $this->assertEquals($expected, (new PrettyArray())->print($array, 1, $resolver));
+        $prettyArray = new PrettyArray();
+
+        if (\count($resolvers) !== 0) {
+            foreach ($resolvers as $type => $closure) {
+                $prettyArray->addResolver($type, $closure);
+            }
+        }
+
+        $this->assertEquals($expected, $prettyArray->print($array, $indentLevel));
     }
 }

@@ -24,11 +24,60 @@ Usage
 -------------
 
 ```php
-<?php
-
 use Narrowspark\PrettyArray\PrettyArray;
 
-return PrettyArray::print([1]); \\ '[0 => 1,]'
+$prettyArray = new PrettyArray();
+```
+
+If you just pass a array you will get this output.
+
+```php
+/**
+ * This is the output.
+ * 
+ * [
+ *     0 => 1,
+ * ]
+ */
+$prettyArray->print([1]);
+```
+
+To let the array output start from 4 spaces, just change the indent level.
+
+```php
+/**
+ * This is the output.
+ * 
+ *     [
+ *         0 => 1,
+ *     ]
+ */
+$prettyArray->print([1], 2);
+```
+
+You can add a type resolver to change the value output.
+
+All supported types can found on [php.net](http://php.net/manual/en/function.gettype.php)
+
+```php
+$prettyArray->addResolver('object', function($value) {
+    return 'foo'
+});
+
+/**
+ * This is the output.
+ * 
+ * [
+ *    0 => 'foo',
+ * ]
+ */
+$prettyArray->print(
+    [
+        0 => function() {
+            return 'foo'; 
+        },
+    ],
+);
 ```
 
 Testing

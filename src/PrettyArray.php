@@ -7,18 +7,16 @@ class PrettyArray
     /**
      * The default resolver for the array values.
      *
-     * @see http://php.net/manual/en/function.gettype.php
-     *
      * @var array
      */
-    protected static $defaultResolverCallbacks = [];
+    protected $resolverCallbacks = [];
 
     /**
      * Create a new PrettyArray instance.
      */
     public function __construct()
     {
-        self::$defaultResolverCallbacks = [
+        $this->resolverCallbacks = [
             'class' => function ($value) {
                 $class = \str_replace('\\\\', '\\', $value);
                 $class = \sprintf('%s::class', $class);
@@ -35,29 +33,37 @@ class PrettyArray
     }
 
     /**
+     * Add a type resolver.
+     *
+     * @see http://php.net/manual/en/function.gettype.php for the supported types
+     *
+     * @param string   $type
+     * @param \Closure $closure
+     *
+     * @return void
+     */
+    public function addResolver(string $type, \Closure $closure): void
+    {
+        $this->resolverCallbacks[$type] = $closure;
+    }
+
+    /**
      * Returns a pretty php array for saving or output.
      *
      * @param array $data
      * @param int   $indentLevel
-     * @param array $resolverCallbacks
      *
      * @return string
      */
-    public function print(array $data, int $indentLevel = 1, array $resolverCallbacks = []): string
+    public function print(array $data, int $indentLevel = 1): string
     {
         $indent  = \str_repeat(' ', $indentLevel * 4);
         $entries = [];
 
-        if (! isset($resolverCallbacks['__resolved__'])) {
-            $resolverCallbacks = \array_merge(self::$defaultResolverCallbacks, $resolverCallbacks);
-
-            $resolverCallbacks['__resolved__'] = true;
-        }
-
         foreach ($data as $key => $value) {
             if (! \is_int($key)) {
                 if (self::isClass($key)) {
-                    $key = $resolverCallbacks['class']($key);
+                    $key = $this->resolverCallbacks['class']($key);
                 } else {
                     $key = \sprintf("'%s'", $key);
                 }
@@ -67,7 +73,7 @@ class PrettyArray
                 '%s%s%s,',
                 $indent,
                 \sprintf('%s => ', $key),
-                self::createValue($value, $indentLevel, $resolverCallbacks)
+                self::createValue($value, $indentLevel)
             );
         }
 
@@ -81,24 +87,23 @@ class PrettyArray
      *
      * @param mixed $value
      * @param int   $indentLevel
-     * @param array $resolverCallbacks
      *
      * @return string
      */
-    protected function createValue($value, int $indentLevel, array $resolverCallbacks): string
+    protected function createValue($value, int $indentLevel): string
     {
         $type = \gettype($value);
 
         if ($type === 'array') {
-            return $this->print($value, $indentLevel + 1, $resolverCallbacks);
+            return $this->print($value, $indentLevel + 1);
         }
 
         if (self::isClass($value)) {
-            return $resolverCallbacks['class']($value);
+            return $this->resolverCallbacks['class']($value);
         }
 
-        if (isset($resolverCallbacks[$type])) {
-            return $resolverCallbacks[$type]($value);
+        if (isset($this->resolverCallbacks[$type])) {
+            return $this->resolverCallbacks[$type]($value);
         }
 
         return \var_export($value, true);
