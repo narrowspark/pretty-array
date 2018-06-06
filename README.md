@@ -60,7 +60,7 @@ You can add a type resolver to change the value output.
 All supported types can be found on [php.net](http://php.net/manual/en/function.gettype.php)
 
 ```php
-$prettyArray->addResolver('object', function($value) {
+$prettyArray->setResolver('object', function($value) {
     return 'foo'
 });
 

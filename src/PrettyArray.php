@@ -42,7 +42,7 @@ final class PrettyArray
      *
      * @return void
      */
-    public function addResolver(string $type, \Closure $closure): void
+    public function setResolver(string $type, \Closure $closure): void
     {
         $this->resolverCallbacks[$type] = $closure;
     }

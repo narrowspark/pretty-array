@@ -79,7 +79,7 @@ final class PrettyArrayTest extends TestCase
 
         if (\count($resolvers) !== 0) {
             foreach ($resolvers as $type => $closure) {
-                $prettyArray->addResolver($type, $closure);
+                $prettyArray->setResolver($type, $closure);
             }
         }
 
