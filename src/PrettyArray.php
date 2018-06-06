@@ -9,7 +9,7 @@ final class PrettyArray
      *
      * @var array
      */
-    protected $resolverCallbacks = [];
+    private $resolverCallbacks = [];
 
     /**
      * Create a new PrettyArray instance.
@@ -90,7 +90,7 @@ final class PrettyArray
      *
      * @return string
      */
-    protected function createValue($value, int $indentLevel): string
+    private function createValue($value, int $indentLevel): string
     {
         $type = \gettype($value);
 
