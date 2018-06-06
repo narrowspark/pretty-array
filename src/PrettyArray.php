@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Narrowspark\PrettyArray;
 
-class PrettyArray
+final class PrettyArray
 {
     /**
      * The default resolver for the array values.
