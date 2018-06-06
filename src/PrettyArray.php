@@ -26,17 +26,9 @@ class PrettyArray
                 return \mb_strpos($class, '\\') === 0 ? $class : '\\' . $class;
             },
             'integer' => function ($value) {
-                if (\is_string($value)) {
-                    return \sprintf("'%s'", $value);
-                }
-
                 return (string) $value;
             },
             'double' => function ($value) {
-                if (\is_string($value)) {
-                    return \sprintf("'%s'", $value);
-                }
-
                 return (string) $value;
             },
         ];
