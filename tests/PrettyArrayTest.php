@@ -39,6 +39,26 @@ final class PrettyArrayTest extends TestCase
                     },
                 ],
             ],
+            [
+                [
+                    function () {
+                        return 'test';
+                    },
+                    [
+                        'foo' => function () {
+                            return 'bar';
+                        },
+                    ],
+                ],
+                '[' . \PHP_EOL . '    0 => 1,' . \PHP_EOL . '    1 => [' . \PHP_EOL . '        \'foo\' => 1,' . \PHP_EOL . '    ],' . \PHP_EOL . ']',
+                [
+                    'object' => function ($value) {
+                        TestCase::assertInstanceOf(\Closure::class, $value);
+
+                        return '1';
+                    },
+                ],
+            ],
         ];
     }
 
