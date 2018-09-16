@@ -83,6 +83,6 @@ final class PrettyArrayTest extends TestCase
             }
         }
 
-        $this->assertEquals($expected, $prettyArray->print($array, $indentLevel));
+        static::assertEquals($expected, $prettyArray->print($array, $indentLevel));
     }
 }

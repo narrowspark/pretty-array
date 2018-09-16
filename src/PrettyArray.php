@@ -50,8 +50,8 @@ final class PrettyArray
     /**
      * Returns a pretty php array for saving or output.
      *
-     * @param array $data
-     * @param int   $indentLevel
+     * @param mixed[] $data
+     * @param int     $indentLevel
      *
      * @return string
      */
@@ -62,7 +62,7 @@ final class PrettyArray
 
         foreach ($data as $key => $value) {
             if (! \is_int($key)) {
-                if (self::isClass($key)) {
+                if ($this->isClass($key)) {
                     $key = $this->resolverCallbacks['class']($key);
                 } else {
                     $key = \sprintf("'%s'", $key);
@@ -73,7 +73,7 @@ final class PrettyArray
                 '%s%s%s,',
                 $indent,
                 \sprintf('%s => ', $key),
-                self::createValue($value, $indentLevel)
+                $this->createValue($value, $indentLevel)
             );
         }
 
@@ -98,7 +98,7 @@ final class PrettyArray
             return $this->print($value, $indentLevel + 1);
         }
 
-        if (self::isClass($value)) {
+        if ($this->isClass($value)) {
             return $this->resolverCallbacks['class']($value);
         }
 
@@ -116,7 +116,7 @@ final class PrettyArray
      *
      * @return bool
      */
-    private static function isClass($key): bool
+    private function isClass($key): bool
     {
         if (! \is_string($key)) {
             return false;
