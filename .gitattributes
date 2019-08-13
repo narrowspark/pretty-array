@@ -2,7 +2,6 @@
 *.php text eol=lf
 
 tests/           export-ignore
-src/             export-ignore
 build/           export-ignore
 .github          export-ignore
 
@@ -12,8 +11,6 @@ build/           export-ignore
 .gitignore       export-ignore
 .php_cs          export-ignore
 .travis.yml      export-ignore
-cerebro          export-ignore
 CONTRIBUTING.md  export-ignore
 phpstan.neon     export-ignore
 phpunit.xml.dist export-ignore
-README.md        export-ignore
